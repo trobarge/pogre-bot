@@ -29,5 +29,28 @@ namespace DiscordBot.Modules
                 sum += number;
             await ReplyAsync(sum.ToString());
         }
+
+        [Command("muteAll")]
+        public async Task MuteAll()
+        {
+            //retrieve user and the voice channel user is currently connected to
+            var user = Context.User;
+            var inVoiceChannel = Context.Guild.VoiceChannels.SingleOrDefault(x => x.Users.Contains(user));
+            
+            //cmd executed out of VC
+            if (inVoiceChannel == null)
+            {
+                await ReplyAsync("Must be in a voice Channel To Execute");
+                return;
+            }   
+
+            //mute each user in within the voice channel
+            foreach(var VCUser in inVoiceChannel.Users)
+            {
+                await VCUser.ModifyAsync(props => { props.Mute = true; });
+            }
+
+            await ReplyAsync($"Muted {inVoiceChannel.Users.Count} users");
+        }
     }
 }
