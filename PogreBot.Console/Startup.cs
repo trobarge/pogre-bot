@@ -59,6 +59,7 @@ namespace DiscordBot
                     LogLevel = Discord.LogSeverity.Verbose,
                     DefaultRunMode = RunMode.Async
                 }))
+                .AddSingleton<HttpClient>()
                 .AddSingleton<CommandHandlerService>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton(_configuration);
